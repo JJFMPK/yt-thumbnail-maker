@@ -19,7 +19,7 @@
     </label>
 
     <label>Font Size:
-      <input type="range" id="fontSize" min="20" max="80" value="48" />
+      <input type="range" id="fontSize" min="20" max="100" value="48" />
     </label>
 
     <label>Text Color:
@@ -40,4 +40,7 @@
   <div class="canvas-container">
     <canvas id="thumbnailCanvas" width="1280" height="720"></canvas>
   </div>
+
+  <!-- Include Fabric.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 </div>
