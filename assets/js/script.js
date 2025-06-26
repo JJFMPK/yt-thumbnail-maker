@@ -1,5 +1,7 @@
 const canvas = new fabric.Canvas('thumbnailCanvas', {
-  backgroundColor: '#000'
+  backgroundColor: '#000',
+  selection: true,
+  preserveObjectStacking: true
 });
 
 // Add title text
@@ -10,10 +12,13 @@ document.getElementById('titleText').addEventListener('input', function () {
       top: 50,
       fontSize: parseInt(document.getElementById('fontSize').value),
       fill: document.getElementById('textColor').value,
-      backgroundColor: document.getElementById('bgColor').value
+      backgroundColor: document.getElementById('bgColor').value,
+      editable: true,
+      selectable: true
     });
     canvas.titleText = text;
     canvas.add(text);
+    canvas.setActiveObject(text);
   } else {
     canvas.titleText.text = this.value;
   }
@@ -28,17 +33,20 @@ document.getElementById('subtitleText').addEventListener('input', function () {
       top: 150,
       fontSize: parseInt(document.getElementById('fontSize').value * 0.75),
       fill: document.getElementById('textColor').value,
-      backgroundColor: document.getElementById('bgColor').value
+      backgroundColor: document.getElementById('bgColor').value,
+      editable: true,
+      selectable: true
     });
     canvas.subtitleText = text;
     canvas.add(text);
+    canvas.setActiveObject(text);
   } else {
     canvas.subtitleText.text = this.value;
   }
   canvas.requestRenderAll();
 });
 
-// Font size change
+// Font size
 document.getElementById('fontSize').addEventListener('input', function () {
   const size = parseInt(this.value);
   if (canvas.titleText) canvas.titleText.set('fontSize', size);
@@ -74,9 +82,11 @@ document.getElementById('imageUpload').addEventListener('change', function (e) {
         left: 100,
         top: 100,
         scaleX: 0.5,
-        scaleY: 0.5
+        scaleY: 0.5,
+        selectable: true
       });
       canvas.add(img);
+      canvas.setActiveObject(img);
     });
   };
   reader.readAsDataURL(file);
@@ -94,7 +104,7 @@ document.getElementById('downloadBtn').addEventListener('click', function () {
   link.click();
 });
 
-// Delete selected object on Delete key press
+// Delete selected object
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Delete' || e.key === 'Backspace') {
     const active = canvas.getActiveObject();
