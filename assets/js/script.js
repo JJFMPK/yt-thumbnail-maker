@@ -24,6 +24,7 @@ function createRTLTextBox(text, top, fontSize) {
 }
 
 
+
 // Title Text
 document.getElementById('titleText').addEventListener('input', function () {
   if (!canvas.titleText) {
