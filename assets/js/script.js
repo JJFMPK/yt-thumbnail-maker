@@ -4,78 +4,82 @@ const canvas = new fabric.Canvas('thumbnailCanvas', {
   preserveObjectStacking: true
 });
 
-// Common settings for RTL Text
+// ✅ RTL-compatible TextBox Creator
 function createRTLTextBox(text, top, fontSize) {
-  return new fabric.Textbox(text, {
-    left: 100,
+  const tb = new fabric.Textbox(text, {
+    left: canvas.width - 100,                // Dahi side se alignment
     top: top,
-    width: 600,
+    width: canvas.width - 200,               // Text wrapping ke liye
     fontSize: fontSize,
     fill: document.getElementById('textColor').value,
     backgroundColor: document.getElementById('bgColor').value,
     textAlign: 'right',
     direction: 'rtl',
     fontFamily: 'Arial',
+    originX: 'right',
     selectable: true,
     editable: true,
-    lockScalingFlip: true,
-    opacity: 1
+    lockScalingFlip: true
   });
+  tb.setCoords(); // refresh coordinates for drag
+  return tb;
 }
 
-
-
-// Title Text
+// ✅ Title input
 document.getElementById('titleText').addEventListener('input', function () {
+  const fontSize = parseInt(document.getElementById('fontSize').value);
   if (!canvas.titleText) {
-    const text = createRTLTextBox(this.value, 50, parseInt(document.getElementById('fontSize').value));
+    const text = createRTLTextBox(this.value, 50, fontSize);
     canvas.titleText = text;
     canvas.add(text);
     canvas.setActiveObject(text);
   } else {
     canvas.titleText.text = this.value;
+    canvas.titleText.setCoords();
   }
-  canvas.requestRenderAll();
+  canvas.renderAll();
 });
 
-// Subtitle Text
+// ✅ Subtitle input
 document.getElementById('subtitleText').addEventListener('input', function () {
+  const fontSize = parseInt(document.getElementById('fontSize').value * 0.75);
   if (!canvas.subtitleText) {
-    const text = createRTLTextBox(this.value, 150, parseInt(document.getElementById('fontSize').value * 0.75));
+    const text = createRTLTextBox(this.value, 150, fontSize);
     canvas.subtitleText = text;
     canvas.add(text);
     canvas.setActiveObject(text);
   } else {
     canvas.subtitleText.text = this.value;
+    canvas.subtitleText.setCoords();
   }
-  canvas.requestRenderAll();
+  canvas.renderAll();
 });
 
-// Font size change
+// ✅ Font size change
 document.getElementById('fontSize').addEventListener('input', function () {
   const size = parseInt(this.value);
   if (canvas.titleText) canvas.titleText.set('fontSize', size);
   if (canvas.subtitleText) canvas.subtitleText.set('fontSize', size * 0.75);
-  canvas.requestRenderAll();
+  canvas.renderAll();
 });
 
-// Text color
+// ✅ Text color
 document.getElementById('textColor').addEventListener('input', function () {
   const color = this.value;
   if (canvas.titleText) canvas.titleText.set('fill', color);
   if (canvas.subtitleText) canvas.subtitleText.set('fill', color);
-  canvas.requestRenderAll();
+  canvas.renderAll();
 });
 
-// Background color
+// ✅ Background color
 document.getElementById('bgColor').addEventListener('input', function () {
   const bg = this.value;
   if (canvas.titleText) canvas.titleText.set('backgroundColor', bg);
   if (canvas.subtitleText) canvas.subtitleText.set('backgroundColor', bg);
-  canvas.requestRenderAll();
+  canvas.renderAll();
 });
 
-// Upload image
+// ✅ Image upload
 document.getElementById('imageUpload').addEventListener('change', function (e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -97,7 +101,7 @@ document.getElementById('imageUpload').addEventListener('change', function (e) {
   reader.readAsDataURL(file);
 });
 
-// Download thumbnail
+// ✅ Download thumbnail
 document.getElementById('downloadBtn').addEventListener('click', function () {
   const dataURL = canvas.toDataURL({
     format: 'png',
@@ -109,7 +113,7 @@ document.getElementById('downloadBtn').addEventListener('click', function () {
   link.click();
 });
 
-// Delete selected object
+// ✅ Delete selected object
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Delete' || e.key === 'Backspace') {
     const active = canvas.getActiveObject();
