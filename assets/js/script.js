@@ -9,7 +9,7 @@ function createRTLTextBox(text, top, fontSize) {
   return new fabric.Textbox(text, {
     left: 100,
     top: top,
-    width: 1000,
+    width: 600,
     fontSize: fontSize,
     fill: document.getElementById('textColor').value,
     backgroundColor: document.getElementById('bgColor').value,
@@ -18,9 +18,11 @@ function createRTLTextBox(text, top, fontSize) {
     fontFamily: 'Arial',
     selectable: true,
     editable: true,
-    lockScalingFlip: true
+    lockScalingFlip: true,
+    opacity: 1
   });
 }
+
 
 // Title Text
 document.getElementById('titleText').addEventListener('input', function () {
