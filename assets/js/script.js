@@ -4,18 +4,28 @@ const canvas = new fabric.Canvas('thumbnailCanvas', {
   preserveObjectStacking: true
 });
 
-// Add title text
+// Common settings for RTL Text
+function createRTLTextBox(text, top, fontSize) {
+  return new fabric.Textbox(text, {
+    left: 100,
+    top: top,
+    width: 1000,
+    fontSize: fontSize,
+    fill: document.getElementById('textColor').value,
+    backgroundColor: document.getElementById('bgColor').value,
+    textAlign: 'right',
+    direction: 'rtl',
+    fontFamily: 'Arial',
+    selectable: true,
+    editable: true,
+    lockScalingFlip: true
+  });
+}
+
+// Title Text
 document.getElementById('titleText').addEventListener('input', function () {
   if (!canvas.titleText) {
-    const text = new fabric.Textbox(this.value, {
-      left: 100,
-      top: 50,
-      fontSize: parseInt(document.getElementById('fontSize').value),
-      fill: document.getElementById('textColor').value,
-      backgroundColor: document.getElementById('bgColor').value,
-      editable: true,
-      selectable: true
-    });
+    const text = createRTLTextBox(this.value, 50, parseInt(document.getElementById('fontSize').value));
     canvas.titleText = text;
     canvas.add(text);
     canvas.setActiveObject(text);
@@ -25,18 +35,10 @@ document.getElementById('titleText').addEventListener('input', function () {
   canvas.requestRenderAll();
 });
 
-// Add subtitle text
+// Subtitle Text
 document.getElementById('subtitleText').addEventListener('input', function () {
   if (!canvas.subtitleText) {
-    const text = new fabric.Textbox(this.value, {
-      left: 100,
-      top: 150,
-      fontSize: parseInt(document.getElementById('fontSize').value * 0.75),
-      fill: document.getElementById('textColor').value,
-      backgroundColor: document.getElementById('bgColor').value,
-      editable: true,
-      selectable: true
-    });
+    const text = createRTLTextBox(this.value, 150, parseInt(document.getElementById('fontSize').value * 0.75));
     canvas.subtitleText = text;
     canvas.add(text);
     canvas.setActiveObject(text);
@@ -46,7 +48,7 @@ document.getElementById('subtitleText').addEventListener('input', function () {
   canvas.requestRenderAll();
 });
 
-// Font size
+// Font size change
 document.getElementById('fontSize').addEventListener('input', function () {
   const size = parseInt(this.value);
   if (canvas.titleText) canvas.titleText.set('fontSize', size);
@@ -92,7 +94,7 @@ document.getElementById('imageUpload').addEventListener('change', function (e) {
   reader.readAsDataURL(file);
 });
 
-// Download button
+// Download thumbnail
 document.getElementById('downloadBtn').addEventListener('click', function () {
   const dataURL = canvas.toDataURL({
     format: 'png',
