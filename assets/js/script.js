@@ -27,18 +27,32 @@ function createRTLTextBox(text, top, fontSize) {
 
 // ✅ Title input
 document.getElementById('titleText').addEventListener('input', function () {
+  const input = this.value.trim();
   const fontSize = parseInt(document.getElementById('fontSize').value);
+
+  // Remove textbox if input is empty
+  if (input === '') {
+    if (canvas.titleText) {
+      canvas.remove(canvas.titleText);
+      canvas.titleText = null;
+    }
+    return;
+  }
+
+  // If titleText not exist, create it
   if (!canvas.titleText) {
-    const text = createRTLTextBox(this.value, 50, fontSize);
+    const text = createRTLTextBox(input, 50, fontSize);
     canvas.titleText = text;
     canvas.add(text);
     canvas.setActiveObject(text);
   } else {
-    canvas.titleText.set({ text: this.value });
+    canvas.titleText.set({ text: input });
     canvas.titleText.setCoords();
   }
+
   canvas.renderAll();
 });
+
 
 // ✅ Subtitle input
 document.getElementById('subtitleText').addEventListener('input', function () {
