@@ -25,30 +25,33 @@ document.addEventListener('DOMContentLoaded', function () {
     return tb;
   }
 
-  document.getElementById('titleText').addEventListener('input', function () {
-    const input = this.value.trim();
-    const fontSize = parseInt(document.getElementById('fontSize').value);
+  const titleInput = document.getElementById('titleText');
+  const fontSizeInput = document.getElementById('fontSize');
 
-    if (input === '') {
-      if (canvas.titleText) {
-        canvas.remove(canvas.titleText);
-        canvas.titleText = null;
+  if (titleInput && fontSizeInput) {
+    titleInput.addEventListener('input', function () {
+      const input = this.value.trim();
+      const fontSize = parseInt(fontSizeInput.value);
+
+      if (input === '') {
+        if (canvas.titleText) {
+          canvas.remove(canvas.titleText);
+          canvas.titleText = null;
+        }
+        return;
       }
-      return;
-    }
 
-    if (!canvas.titleText) {
-      const text = createRTLTextBox(input, 50, fontSize);
-      canvas.titleText = text;
-      canvas.add(text);
-      canvas.setActiveObject(text);
-    } else {
-      canvas.titleText.set({ text: input });
-      canvas.titleText.setCoords();
-    }
+      if (!canvas.titleText) {
+        const text = createRTLTextBox(input, 50, fontSize);
+        canvas.titleText = text;
+        canvas.add(text);
+        canvas.setActiveObject(text);
+      } else {
+        canvas.titleText.set({ text: input });
+        canvas.titleText.setCoords();
+      }
 
-    canvas.renderAll();
-  });
-
-  // یہاں آپ subtitle, imageUpload, download, delete والے باقی event listeners بھی add کر سکتے ہیں
+      canvas.renderAll();
+    });
+  }
 });
