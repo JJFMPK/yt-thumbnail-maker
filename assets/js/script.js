@@ -4,24 +4,24 @@ const canvas = new fabric.Canvas('thumbnailCanvas', {
   preserveObjectStacking: true
 });
 
-// ✅ RTL-compatible TextBox Creator
+// ✅ Centered RTL Text Box
 function createRTLTextBox(text, top, fontSize) {
   const tb = new fabric.Textbox(text, {
-    left: canvas.width - 100,                // Dahi side se alignment
+    left: canvas.getWidth() / 2,
     top: top,
-    width: canvas.width - 200,               // Text wrapping ke liye
+    width: 800,
     fontSize: fontSize,
     fill: document.getElementById('textColor').value,
     backgroundColor: document.getElementById('bgColor').value,
     textAlign: 'right',
     direction: 'rtl',
     fontFamily: 'Arial',
-    originX: 'right',
+    originX: 'center',
     selectable: true,
     editable: true,
     lockScalingFlip: true
   });
-  tb.setCoords(); // refresh coordinates for drag
+  tb.setCoords();
   return tb;
 }
 
@@ -34,7 +34,7 @@ document.getElementById('titleText').addEventListener('input', function () {
     canvas.add(text);
     canvas.setActiveObject(text);
   } else {
-    canvas.titleText.text = this.value;
+    canvas.titleText.set({ text: this.value });
     canvas.titleText.setCoords();
   }
   canvas.renderAll();
@@ -49,13 +49,13 @@ document.getElementById('subtitleText').addEventListener('input', function () {
     canvas.add(text);
     canvas.setActiveObject(text);
   } else {
-    canvas.subtitleText.text = this.value;
+    canvas.subtitleText.set({ text: this.value });
     canvas.subtitleText.setCoords();
   }
   canvas.renderAll();
 });
 
-// ✅ Font size change
+// ✅ Font size
 document.getElementById('fontSize').addEventListener('input', function () {
   const size = parseInt(this.value);
   if (canvas.titleText) canvas.titleText.set('fontSize', size);
@@ -79,7 +79,7 @@ document.getElementById('bgColor').addEventListener('input', function () {
   canvas.renderAll();
 });
 
-// ✅ Image upload
+// ✅ Upload image
 document.getElementById('imageUpload').addEventListener('change', function (e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -101,7 +101,7 @@ document.getElementById('imageUpload').addEventListener('change', function (e) {
   reader.readAsDataURL(file);
 });
 
-// ✅ Download thumbnail
+// ✅ Download image
 document.getElementById('downloadBtn').addEventListener('click', function () {
   const dataURL = canvas.toDataURL({
     format: 'png',
