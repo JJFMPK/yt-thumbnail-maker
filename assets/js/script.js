@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const canvas = new fabric.Canvas('thumbnailCanvas', {
+  window.canvas = new fabric.Canvas('thumbnailCanvas', {
     backgroundColor: '#000',
     selection: true,
     preserveObjectStacking: true
